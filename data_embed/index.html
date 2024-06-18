@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>APRS IGate software &minus; SQ2CPA</title>
+        <link rel="stylesheet" href="/bootstrap.css" />
+        <link rel="stylesheet" href="/style.css" />
+    </head>
+    <body class="bg-body-tertiary">
+        <input type="file" accept="text/json,.json" style="display: none" />
+        <form autocomplete="off" action="/configuration.json" method="POST">
+            <nav
+                class="navbar bg-body-secondary shadow-sm border-bottom sticky-top navbar-expand-lg"
+            >
+                <div class="container">
+                    <a class="navbar-brand" href=""
+                        >APRS IGate</a
+                    >
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarColor01">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">
+                                    Configuration
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Backup</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#" id="backup">Download</a>
+                                    <a class="dropdown-item" href="#" id="restore">Restore</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Device</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#" id="reboot">Reboot</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/received-packets">
+                                    Received packets
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="d-flex">
+                            <button class="btn btn-success my-2 my-sm-0" type="submit">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="container d-none" id="received-packets">
+                <div class="row my-5 d-flex align-items-top">
+                    <div class="col-12">
+                        <h3>Last 20 received packets list</h3>
+                        <table class="table mt-4">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Time*</th>
+                                    <th scope="col">Frame</th>
+                                    <th scope="col">Port</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
+                        <span>List refresh automatically every 15 seconds.</span><br>
+                        <small>* - For now time is measured from board boot up.</small>
+                    </div>
+                </div>
+                <hr />
+            </div>
+        
+            <div class="container" id="configuration">
+                <main>
+                    <div class="col-10 my-5 mx-auto">
+                        <div class="row my-5 d-flex align-items-top">
+                            <div class="col-lg-3 col-sm-12">
+                                <h5>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="20"
+                                        height="20"
+                                        fill="currentColor"
+                                        class="bi bi-database-fill"
+                                        viewBox="0 0 16 16"
+                                    >
+                                        <path
+                                            d="M3.904 1.777C4.978 1.289 6.427 1 8 1s3.022.289 4.096.777C13.125 2.245 14 2.993 14 4s-.875 1.755-1.904 2.223C11.022 6.711 9.573 7 8 7s-3.022-.289-4.096-.777C2.875 5.755 2 5.007 2 4s.875-1.755 1.904-2.223"
+                                        />
+                                        <path
+                                            d="M2 6.161V7c0 1.007.875 1.755 1.904 2.223C4.978 9.71 6.427 10 8 10s3.022-.289 4.096-.777C13.125 8.755 14 8.007 14 7v-.839c-.457.432-1.004.751-1.49.972C11.278 7.693 9.682 8 8 8s-3.278-.307-4.51-.867c-.486-.22-1.033-.54-1.49-.972"
+                                        />
+                                        <path
+                                            d="M2 9.161V10c0 1.007.875 1.755 1.904 2.223C4.978 12.711 6.427 13 8 13s3.022-.289 4.096-.777C13.125 11.755 14 11.007 14 10v-.839c-.457.432-1.004.751-1.49.972-1.232.56-2.828.867-4.51.867s-3.278-.307-4.51-.867c-.486-.22-1.033-.54-1.49-.972"
+                                        />
+                                        <path
+                                            d="M2 12.161V13c0 1.007.875 1.755 1.904 2.223C4.978 15.711 6.427 16 8 16s3.022-.289 4.096-.777C13.125 14.755 14 14.007 14 13v-.839c-.457.432-1.004.751-1.49.972-1.232.56-2.828.867-4.51.867s-3.278-.307-4.51-.867c-.486-.22-1.033-.54-1.49-.972"
+                                        />
+                                    </svg>
+                                    APRS-IS
+                                </h5>
+                                <small
+                                    >Enter you APRS-IS server and
+                                    credentials. Callsign will be used for authorization with APRS-IS server.</small
+                                >
+                            </div>
+                            <div class="col-lg-9 col-sm-12">
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <div class="form-check form-switch">
+                                            <input
+                                                type="checkbox"
+                                                name="aprs_is.active"
+                                                id="aprs_is.active"
+                                                class="form-check-input"
+                                            />
+                                            <label
+                                                for="aprs_is.active"
+                                                class="form-label"
+                                                >Enable APRS-IS
+                                                connection</label
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="callsign" class="form-label"
+                                            >Callsign and SSID</label
+                                        >
+                                        <input
+                                            type="text"
+                                            name="callsign"
+                                            id="callsign"
+                                            class="form-control"
+                                            placeholder="N0CALL-10"
+                                            required=""
+                                        />
+                                    </div>
+                                    <div class="col-6">
+                                        <label
+                                            for="aprs_is.passcode"
+                                            class="form-label"
+                                            >Passcode</label
+                                        >
+                                        <input
+                                            type="text"
+                                            name="aprs_is.passcode"
+                                            id="aprs_is.passcode"
+                                            class="form-control"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-8">
+                                        <label
+                                            for="aprs_is.server"
+                                            class="form-label"
+                                            >Server</label
+                                        >
+                                        <input
+                                            type="text"
+                                            name="aprs_is.server"
+                                            id="aprs_is.server"
+                                            placeholder="soam.aprs2.net"
+                                            class="form-control"
+                                        />
+                                    </div>
+                                    <div class="col-4">
+                                        <label
+                                            for="aprs_is.port"
+                                            class="form-label"
+                                            >Port</label
+                                        >
+                                        <input
+                                            type="text"
+                                            name="aprs_is.port"
+                                            id="aprs_is.port"
+                                            placeholder="14580"
+                                            class="form-control"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+
+                        <div class="row my-5 d-flex align-items-top">
+                            <div class="col-lg-3 col-sm-12">
+                                <h5>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="20"
+                                        height="20"
+                                        fill="currentColor"
+                                        class="bi bi-database-fill"
+                                        viewBox="0 0 16 16"
+                                    >
+                                        <path
+                                            d="M3.904 1.777C4.978 1.289 6.427 1 8 1s3.022.289 4.096.777C13.125 2.245 14 2.993 14 4s-.875 1.755-1.904 2.223C11.022 6.711 9.573 7 8 7s-3.022-.289-4.096-.777C2.875 5.755 2 5.007 2 4s.875-1.755 1.904-2.223"
+                                        />
+                                        <path
+                                            d="M2 6.161V7c0 1.007.875 1.755 1.904 2.223C4.978 9.71 6.427 10 8 10s3.022-.289 4.096-.777C13.125 8.755 14 8.007 14 7v-.839c-.457.432-1.004.751-1.49.972C11.278 7.693 9.682 8 8 8s-3.278-.307-4.51-.867c-.486-.22-1.033-.54-1.49-.972"
+                                        />
+                                        <path
+                                            d="M2 9.161V10c0 1.007.875 1.755 1.904 2.223C4.978 12.711 6.427 13 8 13s3.022-.289 4.096-.777C13.125 11.755 14 11.007 14 10v-.839c-.457.432-1.004.751-1.49.972-1.232.56-2.828.867-4.51.867s-3.278-.307-4.51-.867c-.486-.22-1.033-.54-1.49-.972"
+                                        />
+                                        <path
+                                            d="M2 12.161V13c0 1.007.875 1.755 1.904 2.223C4.978 15.711 6.427 16 8 16s3.022-.289 4.096-.777C13.125 14.755 14 14.007 14 13v-.839c-.457.432-1.004.751-1.49.972-1.232.56-2.828.867-4.51.867s-3.278-.307-4.51-.867c-.486-.22-1.033-.54-1.49-.972"
+                                        />
+                                    </svg>
+                                    TNC
+                                </h5>
+                                <small
+                                    >TNC and KISS configuration</small
+                                >
+                            </div>
+                            <div class="col-lg-9 col-sm-12">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-check form-switch">
+                                            <div class="form-text">
+                                                Server will be available at port <strong>8000</strong> for both ports. <br>
+                                                Port A at <strong>8001</strong>. Port B at <strong>8002</strong>.
+                                            </div>
+                                            <input
+                                                type="checkbox"
+                                                name="tnc.enableServer"
+                                                id="tnc.enableServer"
+                                                class="form-check-input"
+                                            />
+                                            <label
+                                                for="tnc.enableServer"
+                                                class="form-label"
+                                                >Enable TNC server</label
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-6">
+                                        <label
+                                            for="aprs_is.port"
+                                            class="form-label"
+                                            >Port A callsign</label
+                                        >
+                                        <input
+                                            type="text"
+                                            name="ports.A.callsign"
+                                            id="ports.A.callsign"
+                                            placeholder="115200"
+                                            class="form-control"
+                                        />
+                                    </div>
+                                    <div class="col-6">
+                                        <label
+                                            for="aprs_is.port"
+                                            class="form-label"
+                                            >Port A baundrate <small>(IO4)</small></label
+                                        >
+                                        <select
+                                            class="form-select form-select"
+                                            name="ports.A.baudrate"
+                                            id="ports.A.baudrate">
+                                            <option value="1200">1200</option>
+                                            <option value="2400">2400</option>
+                                            <option value="4800">4800</option>
+                                            <option value="9600">9600</option>
+                                            <option value="19200">19200</option>
+                                            <option value="38400">38400</option>
+                                            <option value="57600">57600</option>
+                                            <option value="115200">115200</option>
+                                            <option value="230400">230400</option>
+                                            <option value="460800">460800</option>
+                                            <option value="921600">921600</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-6">
+                                        <label
+                                            for="aprs_is.port"
+                                            class="form-label"
+                                            >Port B callsign</label
+                                        >
+                                        <input
+                                            type="text"
+                                            name="ports.B.callsign"
+                                            id="ports.B.callsign"
+                                            placeholder="115200"
+                                            class="form-control"
+                                        />
+                                    </div>
+                                    <div class="col-6">
+                                        <label
+                                            for="aprs_is.port"
+                                            class="form-label"
+                                            >Port B baundrate <small>(IO35)</small></label
+                                        >
+                                        <select
+                                            class="form-select form-select"
+                                            name="ports.B.baudrate"
+                                            id="ports.B.baudrate">
+                                            <option value="1200">1200</option>
+                                            <option value="2400">2400</option>
+                                            <option value="4800">4800</option>
+                                            <option value="9600">9600</option>
+                                            <option value="19200">19200</option>
+                                            <option value="38400">38400</option>
+                                            <option value="57600">57600</option>
+                                            <option value="115200">115200</option>
+                                            <option value="230400">230400</option>
+                                            <option value="460800">460800</option>
+                                            <option value="921600">921600</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer
+                    class="my-5 py-5 text-body-secondary text-center text-small"
+                >
+                    <p class="mb-1 small">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-cc-circle-fill"
+                            viewBox="0 0 16 16"
+                        >
+                            <path
+                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.408 5.89c.681 0 1.138.47 1.187 1.107h1.147v-.11c-.053-1.187-1.024-2-2.343-2-1.604 0-2.518 1.05-2.518 2.751v.747c0 1.7.906 2.73 2.518 2.73 1.314 0 2.285-.792 2.343-1.939v-.114H6.595c-.049.615-.497 1.05-1.187 1.05-.84 0-1.318-.62-1.318-1.727v-.742c0-1.112.488-1.754 1.318-1.754Zm5.404 0c.68 0 1.138.47 1.186 1.107h1.147v-.11c-.053-1.187-1.024-2-2.342-2-1.604 0-2.518 1.05-2.518 2.751v.747c0 1.7.905 2.73 2.518 2.73 1.314 0 2.285-.792 2.342-1.939v-.114h-1.147c-.048.615-.496 1.05-1.186 1.05-.84 0-1.319-.62-1.319-1.727v-.742c0-1.112.488-1.754 1.319-1.754Z"
+                            />
+                        </svg>
+                        2024
+                        <b
+                            ><a href="https://github.com/sq2cpa" target="_blank"
+                                >SQ2CPA</a
+                            ></b
+                        >
+                    </p>
+                </footer>
+            </div>
+        </form>
+        <div
+            class="modal fade"
+            id="saveModal"
+            tabindex="-1"
+            aria-labelledby="saveModal"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Saving settings</h5>
+                    </div>
+                    <div class="modal-body">
+                        Please wait... Settings will be saved and LoRa will
+                        reboot
+                    </div>
+                    <div class="modal-footer">Waiting for connection...</div>
+                </div>
+            </div>
+        </div>
+        <div
+            class="modal fade"
+            id="savedModal"
+            tabindex="-1"
+            aria-labelledby="saveModal"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Settings</h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
+                    </div>
+                    <div class="modal-body">Settings saved!</div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div id="toast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">System Message</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body text-center"></div>
+            </div>
+        </div>
+    </body>
+    <script src="/bootstrap.js"></script>
+    <script src="/script.js"></script>
+</html>

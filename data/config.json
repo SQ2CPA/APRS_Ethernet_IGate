@@ -1,0 +1,22 @@
+{
+    "callsign": "N0CALL",
+    "aprs_is": {
+        "active": false,
+        "passcode": "XYZVW",
+        "server": "rotate.aprs2.net",
+        "port": 14580
+    },
+    "tnc": {
+        "enableServer": false
+    },
+    "ports": {
+        "A": {
+            "callsign": "N0CALL-2",
+            "baudrate": 115200
+        },
+        "B": {
+            "callsign": "N0CALL-4",
+            "baudrate": 115200
+        }
+    }
+}
