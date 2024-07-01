@@ -124,4 +124,6 @@ void loop() {
         }
     }
 
+    TNC_Utils::loop();
+
 }
